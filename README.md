@@ -28,12 +28,12 @@ El objetivo del proyecto es ofrecer una base adaptable, sencilla y útil para an
 - Python **3.8 o superior**  
 - Bibliotecas recomendadas: `numpy`, `pandas`, `matplotlib`  
 
-**Ejemplo de instalación (añádelo como comandos bash en tu entorno):**
-# python -m venv venv
-# source venv/bin/activate     # Linux / macOS
-# venv\Scripts\activate        # Windows
-# pip install numpy pandas matplotlib
-
+```bash
+ python -m venv venv
+ source venv/bin/activate     # Linux / macOS
+venv\Scripts\activate        # Windows
+ pip install numpy pandas matplotlib
+```
 ---
 
 ## 🚀 Instalación rápida
