@@ -29,14 +29,15 @@ El objetivo del proyecto es ofrecer una base adaptable, sencilla y útil para an
 - Bibliotecas recomendadas: `numpy`, `pandas`, `matplotlib`  
 
 ```bash
- python -m venv venv
- source venv/bin/activate     # Linux / macOS
+python -m venv venv
+source venv/bin/activate     # Linux / macOS
 venv\Scripts\activate        # Windows
- pip install numpy pandas matplotlib
+pip install numpy pandas matplotlib
 ```
 ---
 
 ## 🚀 Instalación rápida
+```bash
 1. Clona el repositorio:  
 # git clone https://github.com/WetZap/ProyectoOptica.git
 2. Entra al directorio:  
@@ -44,7 +45,7 @@ venv\Scripts\activate        # Windows
 3. (Opcional) Crea un entorno virtual e instala las dependencias.  
 4. Ejecuta el script principal:  
 # python Optica.py
-
+```
 > 💡 *Los comandos están comentados para evitar errores al copiar. Descoméntalos en tu terminal según corresponda.*
 
 ---
@@ -54,9 +55,6 @@ venv\Scripts\activate        # Windows
 2. Introduce los datos requeridos (índices, ángulos, longitudes, etc.).  
 3. Analiza la salida por consola o en los archivos de resultados generados.  
 4. Usa el archivo `Metales_IndRef.xlsx` como referencia de índices ópticos.  
-
-### Ejemplo genérico
-# python Optica.py --input datos.csv
 
 ---
 
