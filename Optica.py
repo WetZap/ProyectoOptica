@@ -23,7 +23,7 @@ desfase_inicial = 0  # Desfase inicial
 
 elemento = ''  # Elemento metálico
 
-longitud_onda = 500  # Longitud de onda en nm
+longitud_onda = 0  # Longitud de onda en nm
 
 
 
@@ -69,9 +69,8 @@ def sub_menu():
 
 # Petición de datos al usuario para Opción 1 MENU y opción 1 SUBMENU
 def pedir_datosLINEAL():
-    print("Ingrese los datos en el siguiente formato: angulo de incidencia (grados)/n - ki/acimut")
-    print("Este sería un ejemplo de entrada: 45/1.33 - 2.5i/30")
-    entrada = input("")
+
+    entrada = input("Entada: ")
 
     # Procesar la entrada
     entrada = entrada.split("/")
@@ -96,9 +95,17 @@ def pedir_datosLINEAL():
 
     # Procesar el número complejo
 
+
     while ' ' in entrada[1]: # Eliminar espacios en blanco
         entrada[1] = entrada[1].replace(" ", "")
+    try:
+
+        complex(entrada[1].replace("i","j"))
+    except ValueError:
+        print("Número complejo no válido. Por favor, ingrese un número complejo en el formato o a-bi.")
+        return pedir_datosLINEAL()
     
+
     if '+' not in entrada[1]: # Distinción entre valores positivos y negativos
         numeroComple = entrada[1].split("-")
         numeroComple[1] = numeroComple[1].replace("i", "")
@@ -115,9 +122,8 @@ def pedir_datosLINEAL():
 
 # Petición de datos al usuario para Opción 1 MENU y opción 2 SUBMENU
 def pedir_datosNOLINEAL():
-    print("Ingrese los datos en el siguiente formato: angulo de incidencia (grados)/n - ki/razon de ejes (grados)")
-    print("Este sería un ejemplo de entrada: 45/1.33 - 2.5i/30")
-    entrada = input("")
+    
+    entrada = input("Entada: ")
 
     # Procesar la entrada
     entrada = entrada.split("/")
@@ -161,9 +167,8 @@ def pedir_datosNOLINEAL():
 
 # Petición de datos al usuario para Opción 1 MENU y opción 3 SUBMENU
 def pedir_datos_Natural():
-    print("Ingrese los datos en el siguiente formato: angulo de incidencia (grados)/n - ki")
-    print("Este sería un ejemplo de entrada: 45/1.33 - 2.5i")
-    entrada = input("")
+    
+    entrada = input("Entada: ")
 
     # Procesar la entrada
     entrada = entrada.split("/")
@@ -205,9 +210,6 @@ def pedir_datos_Natural():
 
 # Petición de datos al usuario para Opción 2 MENU
 def pedir_datos_Elemento():
-    print("Datos disponibles para los siguientes elementos metálicos: Ag, Au, Cu, Al, Pt, Zn, Fe.\n Longitudes de onda disponibles entre 300 nm y 1700 nm.")
-    print("Ingrese los datos en el siguiente formato: elemento metalico/longitud de onda (nm)/angulo de incidencia (grados)")
-    print("Este sería un ejemplo de entrada: Ag/500/45")
     entrada = input("")
 
     # Procesar la entrada
@@ -216,6 +218,8 @@ def pedir_datos_Elemento():
     if len(entrada) != 3:
         print("Formato incorrecto. Por favor, ingrese los datos en el formato correcto.")
         return pedir_datos_Elemento()
+    
+
     elemento = entrada[0].strip().lower()
     if elemento not in ['ag', 'au', 'cu', 'al', 'pt', 'zn', 'fe']:
         print("Elemento no válido. Por favor, ingrese un elemento válido (Ag, Au, Cu, Al, Pt, Zn, Fe).")
@@ -533,32 +537,43 @@ def main():
         if opcion == '1':
 
             while opcion1 := sub_menu():
-                if opcion1 == '4':
-                    break
+
                 # 1º Opcion: Polarización lineal
                 if opcion1 == '1':
                     print("Ha seleccionado polarización lineal.")
-                    print("----------------------------------------------------------------------------")
+                    print("-"* 100)
+                    print("Ingrese los datos en el siguiente formato: angulo de incidencia (grados)/n - ki/acimut")
+                    print("Este sería un ejemplo de entrada: 45/1.33 - 2.5i/30")
+                    print("-"* 100)
                     CalculosSubmenu1()
-                    print("----------------------------------------------------------------------------")
+                    print("-"* 100)
 
                     input("Pulsa Enter para continuar…")
                 # 2º Opcion: Polarización no lineal
                 elif opcion1 == '2':
                     print("Ha seleccionado polarización no lineal.")
-                    print("----------------------------------------------------------------------------")
+                    print("-"* 100)
+                    print("Ingrese los datos en el siguiente formato: angulo de incidencia (grados)/n - ki/razon de ejes (grados)")
+                    print("Este sería un ejemplo de entrada: 45/1.33 - 2.5i/30")
+                    print("-"* 100) 
                     CalculosSubmenu2()
-                    print("----------------------------------------------------------------------------")
+                    print("-"* 100)
 
                     input("Pulsa Enter para continuar…")
                 # 3º Opcion: Luz natural
                 elif opcion1 == '3':
                     print("Ha seleccionado luz natural.")
-                    print("----------------------------------------------------------------------------")
+                    print("-"* 100)
+                    print("Ingrese los datos en el siguiente formato: angulo de incidencia (grados)/n - ki")
+                    print("Este sería un ejemplo de entrada: 45/1.33 - 2.5i")
+                    print("-"* 100)
                     CalculosSubmenu3()
-                    print("----------------------------------------------------------------------------")
+                    print("-"* 100)
+
 
                     input("Pulsa Enter para continuar…")
+                elif opcion1 == '4':
+                    break
                 else:
                     print("Opción no válida. Por favor, intente de nuevo.")
                     continue
@@ -567,23 +582,26 @@ def main():
             input("Pulsa Enter para continuar…")
         elif opcion == '2':
             print("Ha seleccionado cálculo por elementos metálicos.")
-            print("----------------------------------------------------------------------------")
+            print("-"* 100)
+            print("Datos disponibles para los siguientes elementos metálicos: Ag, Au, Cu, Al, Pt, Zn, Fe.\nLongitudes de onda disponibles entre 300 nm y 1700 nm.")
+            print("Ingrese los datos en el siguiente formato: elemento metalico/longitud de onda (nm)/angulo de incidencia (grados)")
+            print("Este sería un ejemplo de entrada: Ag/500/45")
             CalculosMenu2()
-            print("----------------------------------------------------------------------------")
+            print("-"* 100)
 
             input("Pulsa Enter para continuar…")
-        elif opcion == '3':
-            print("Saliendo del programa.")
-            break
-
-
-
+       
         elif opcion == '0':
+            print("-"* 100)
             global n
             print("Cambiar valor de n.")
             n = float(input("Ingrese el nuevo valor de n: "))
             print(f"El nuevo valor de n es: {n}")
-            input("Pulsa Enter para continuar…")
+            print("-"* 100)
+
+        elif opcion == '3':
+            print("Saliendo del programa.")
+            break
         else:
             print("Opción no válida. Por favor, intente de nuevo.")
             continue
