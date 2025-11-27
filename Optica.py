@@ -362,13 +362,13 @@ def CalculosSubmenu1():
     desfase_corr = VueltaAngular(desfase_corr)
     print(f"ρ = |r⟂|/|r∥| = {rho:.8f}")
     print(f"Δφ (sin corrección) = {desfase:.2f}°")
-    print(f"Δφ (corregido) = {desfase_corr:.2f}°")
+    print(f"Δφ (corregido) = {desfase_corr:.4f}°")
 
     print("\nSegunda forma")
     print("─" * 70)
     desfase_2forma = Calcular_2ºForma(n, n_comp, theta)
     print(f"|ρ| (2ª forma) = {np.abs(desfase_2forma):.8f}")
-    print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.2f}°")
+    print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.4f}°")
 
     # Coeficientes de reflexión y transmisión para acimut dado
     coef_reflexion = (np.sin(acimut) ** 2) * np.abs(r_perpe) ** 2 + (np.cos(acimut) ** 2) * np.abs(r_paral) ** 2
@@ -422,13 +422,13 @@ def CalculosSubmenu2():
     desfase_corr = VueltaAngular(desfase_corr)
     print(f"ρ = |r⟂|/|r∥| = {rho:.8f}")
     print(f"Δφ_total  = {desfase:.2f}°")
-    print(f"Δφ_total (corregido) = {desfase_corr:.2f}°")
+    print(f"Δφ_total (corregido) = {desfase_corr:.4f}°")
 
     print("\nSegunda forma")
     print("─" * 70)
     desfase_2forma = Calcular_2ºForma(n, n_comp, theta)
     print(f"|ρ| (2ª forma) = {np.abs(desfase_2forma):.8f}")
-    print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.2f}°")
+    print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.4f}°")
 
     print("\nClasificación de la polarización")
     print("─" * 70)
@@ -473,13 +473,13 @@ def CalculosSubmenu3():
     desfase_corr = VueltaAngular(desfase_corr)
     print(f"ρ = |r⟂|/|r∥| = {rho:.8f}")
     print(f"Δφ (sin corrección) = {desfase:.2f}°")
-    print(f"Δφ (corregido) = {desfase_corr:.2f}°")
+    print(f"Δφ (corregido) = {desfase_corr:.4f}°")
 
     print("\nSegunda forma")
     print("─" * 70)
     desfase_2forma = Calcular_2ºForma(n, n_comp, theta)
     print(f"|ρ| (2ª forma) = {np.abs(desfase_2forma):.8f}")
-    print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.2f}°")
+    print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.4f}°")
 
     # Coeficientes de reflexión y transmisión para acimut dado
     coef_reflexion = (1/2)*(np.abs(r_perpe) ** 2 + np.abs(r_paral) ** 2)
@@ -501,7 +501,7 @@ def CalculosMenu2():
     print("\n" + "═" * 70)
     print("Cálculo por elementos metálicos – Resultados")
     print("═" * 70)
-    print(f"Elemento: {elemento.upper()} | λ = {longitud_onda:.1f} nm | θ = {theta * 180 / np.pi:.2f}°")
+    print(f"Elemento: {elemento.capitalize()} | λ = {longitud_onda:.1f} nm | θ = {theta * 180 / np.pi:.2f}°")
     print(f"n* (complejo) = {n_comp}")
 
     r_perpe = calcular_r_perpe(n, n_comp, theta)
@@ -520,13 +520,13 @@ def CalculosMenu2():
     desfase_corr = VueltaAngular(desfase_corr)
     print(f"ρ = |r⟂|/|r∥| = {rho:.8f}")
     print(f"Δφ_total  = {desfase:.2f}°")
-    print(f"Δφ_total (corregido) = {desfase_corr:.2f}°")
+    print(f"Δφ_total (corregido) = {desfase_corr:.4f}°")
 
     print("\nSegunda forma")
     print("─" * 70)
     desfase_2forma = Calcular_2ºForma(n, n_comp, theta)
     print(f"|ρ| (2ª forma) = {np.abs(desfase_2forma):.8f}")
-    print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.2f}°")
+    print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.4f}°")
     print("═" * 70 + "\n")
     return
 
