@@ -154,7 +154,7 @@ def pedir_datosNOLINEAL():
     theta = (float(entrada[0]) * np.pi / 180)
 
     # Convertir ángulo de desfase de grados a radianes
-    desfase = (float(entrada[2]) * np.pi / 180)
+    razon = float(entrada[2])
 
     # Procesar el número complejo
 
@@ -173,7 +173,7 @@ def pedir_datosNOLINEAL():
 
 
     # Devolver los valores procesados
-    return theta, n_comp, desfase
+    return theta, n_comp, razon
 
 # Petición de datos al usuario para Opción 1 MENU y opción 3 SUBMENU
 def pedir_datos_Natural():
@@ -287,8 +287,8 @@ def calcular_r_paral(n, n_comp, theta):
     # Devolvemos el valor tras operar sobre la definicion de r paralelo como la suma y resta de los valores de los angulos.
     return ((t - t_prima)*(1 - t*t_prima))/((t + t_prima)*(1 + t*t_prima))
 
-# Calculo de la 2º forma del desfase y de la razón entre los coeficientes de reflexión
-def Calcular_2ºForma(n, n_comp, theta):
+# Calculo de la 2a forma del desfase y de la razón entre los coeficientes de reflexión
+def Calcular_2aForma(n, n_comp, theta):
     cos_theta_prima = np.sqrt(1 - ((n* np.sin(theta))/n_comp)**2)
     ncompcos = n_comp * cos_theta_prima
     return ((np.cos(theta)*ncompcos + n*np.sin(theta)**2)/(np.cos(theta)*ncompcos - n*np.sin(theta)**2))
@@ -375,13 +375,14 @@ def CalculosSubmenu1():
     desfase = r_perpend['Angulo'] - r_paralle['Angulo']
     desfase_corr = desfase + 180
     desfase_corr = VueltaAngular(desfase_corr)
+    desfase_corr_rad = desfase_corr * np.pi / 180
     print(f"ρ = |r⟂|/|r∥| = {rho:.8f}")
     print(f"Δφ (sin corrección) = {desfase:.2f}°")
     print(f"Δφ (corregido) = {desfase_corr:.4f}°")
 
     print("\nSegunda forma")
     print("─" * 70)
-    desfase_2forma = Calcular_2ºForma(n, n_comp, theta)
+    desfase_2forma = Calcular_2aForma(n, n_comp, theta)
     print(f"|ρ| (2ª forma) = {np.abs(desfase_2forma):.8f}")
     print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.4f}°")
 
@@ -390,7 +391,7 @@ def CalculosSubmenu1():
     print("\nRazón entre amplitudes tras reflexión")
     print("─" * 70)
     razon = np.abs(desfase_2forma) * np.exp(1j * np.angle(desfase_2forma))*np.tan(acimut)
-    razon2 = rho*np.exp(1j * desfase_corr) * np.tan(acimut)
+    razon2 = rho*np.exp(1j * desfase_corr_rad) * np.tan(acimut)
     print(f"E''⟂/E''∥ = {np.abs(razon2):.8f} (1ª forma)")
     print(f"E''⟂/E''∥ = {np.abs(razon):.8f} (2ª forma)")
     print("─" * 70)
@@ -448,13 +449,14 @@ def CalculosSubmenu2():
     desfase = r_perpend['Angulo'] - r_paralle['Angulo']
     desfase_corr = desfase + 180
     desfase_corr = VueltaAngular(desfase_corr)
+    desfase_corr_rad = desfase_corr * np.pi / 180
     print(f"ρ = |r⟂|/|r∥| = {rho:.8f}")
     print(f"Δφ_total  = {desfase:.2f}°")
     print(f"Δφ_total (corregido) = {desfase_corr:.4f}°")
 
     print("\nSegunda forma")
     print("─" * 70)
-    desfase_2forma = Calcular_2ºForma(n, n_comp, theta)
+    desfase_2forma = Calcular_2aForma(n, n_comp, theta)
     print(f"|ρ| (2ª forma) = {np.abs(desfase_2forma):.8f}")
     print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.4f}°")
 
@@ -463,7 +465,7 @@ def CalculosSubmenu2():
     print("\nRazón entre amplitudes tras reflexión")
     print("─" * 70)
     razon = np.abs(desfase_2forma) * np.exp(1j * np.angle(desfase_2forma))*razon_Amplitudes
-    razon2 = rho*np.exp(1j * desfase_corr) * razon_Amplitudes
+    razon2 = rho*np.exp(1j * desfase_corr_rad) * razon_Amplitudes
     print(f"E''⟂/E''∥ = {np.abs(razon2):.8f} (1ª forma)")
     print(f"E''⟂/E''∥ = {np.abs(razon):.8f} (2ª forma)")
     print("─" * 70)
@@ -500,7 +502,6 @@ def CalculosSubmenu2():
 
 # Cálculos para cada opción del submenú 3
 def CalculosSubmenu3():
-    print("\n" + "═" * 70)
     # Pedir datos al usuario
     theta, n_comp = pedir_datos_Natural()
 
@@ -532,7 +533,7 @@ def CalculosSubmenu3():
 
     print("\nSegunda forma")
     print("─" * 70)
-    desfase_2forma = Calcular_2ºForma(n, n_comp, theta)
+    desfase_2forma = Calcular_2aForma(n, n_comp, theta)
     print(f"|ρ| (2ª forma) = {np.abs(desfase_2forma):.8f}")
     print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.4f}°")
 
@@ -579,7 +580,7 @@ def CalculosMenu2():
 
     print("\nSegunda forma")
     print("─" * 70)
-    desfase_2forma = Calcular_2ºForma(n, n_comp, theta)
+    desfase_2forma = Calcular_2aForma(n, n_comp, theta)
     print(f"|ρ| (2ª forma) = {np.abs(desfase_2forma):.8f}")
     print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.4f}°")
     print("═" * 70 + "\n")
@@ -593,7 +594,7 @@ def main():
 
             while opcion1 := sub_menu():
 
-                # 1º Opcion: Polarización lineal
+                # 1a Opcion: Polarización lineal
                 if opcion1 == '1':
                     print("Ha seleccionado polarización lineal.")
                     print("-"* 100)
@@ -604,7 +605,7 @@ def main():
                     print("-"* 100)
 
                     input("Pulsa Enter para continuar…")
-                # 2º Opcion: Polarización no lineal
+                # 2a Opcion: Polarización no lineal
                 elif opcion1 == '2':
                     print("Ha seleccionado polarización no lineal.")
                     print("-"* 100)
@@ -615,7 +616,7 @@ def main():
                     print("-"* 100)
 
                     input("Pulsa Enter para continuar…")
-                # 3º Opcion: Luz natural
+                # 3a Opcion: Luz natural
                 elif opcion1 == '3':
                     print("Ha seleccionado luz natural.")
                     print("-"* 100)
@@ -634,7 +635,6 @@ def main():
                     continue
 
 
-            input("Pulsa Enter para continuar…")
         elif opcion == '2':
             print("Ha seleccionado cálculo por elementos metálicos.")
             print("-"* 100)
@@ -651,6 +651,9 @@ def main():
             global n
             print("Cambiar valor de n.")
             n = float(input("Ingrese el nuevo valor de n: "))
+            while n <= 0:
+                print("El valor de n debe ser mayor que 0. Por favor, ingrese un valor válido.")
+                n = float(input("Ingrese el nuevo valor de n: "))
             print(f"El nuevo valor de n es: {n}")
             print("-"* 100)
 
