@@ -1,5 +1,5 @@
 import numpy as np
-
+# Casi Perfe
 # Declaracion de las variables
 
 # Variables inicializadas
@@ -136,12 +136,13 @@ def pedir_datosNOLINEAL():
     # Procesar la entrada
     entrada = entrada.split("/")
 
-    if len(entrada) != 3:
+    if len(entrada) != 4:
         print("Formato incorrecto. Por favor, ingrese los datos en el formato correcto.")
         return pedir_datosNOLINEAL()
     
     try:
         float(entrada[0])
+        float(entrada[3])
         float(entrada[2])
     except ValueError:
         print("Ángulo de incidencia o desfase no válidos. Por favor, ingrese valores numéricos.")
@@ -153,6 +154,7 @@ def pedir_datosNOLINEAL():
     # Convertir ángulo de grados a radianes
     theta = (float(entrada[0]) * np.pi / 180)
 
+    desfase_inicial = (float(entrada[3]))
     # Convertir ángulo de desfase de grados a radianes
     razon = float(entrada[2])
 
@@ -173,7 +175,7 @@ def pedir_datosNOLINEAL():
 
 
     # Devolver los valores procesados
-    return theta, n_comp, razon
+    return theta, n_comp, razon, desfase_inicial
 
 # Petición de datos al usuario para Opción 1 MENU y opción 3 SUBMENU
 def pedir_datos_Natural():
@@ -429,7 +431,7 @@ def CalculosSubmenu2():
 
 
     # Pedir datos al usuario
-    theta, n_comp, razon_Amplitudes = pedir_datosNOLINEAL()
+    theta, n_comp, razon_Amplitudes,desfase_inicial = pedir_datosNOLINEAL()
 
     r_perpe = calcular_r_perpe(n, n_comp, theta)
     r_paral = calcular_r_paral(n, n_comp, theta)
@@ -446,7 +448,7 @@ def CalculosSubmenu2():
     print(f"r⟂: |r⟂| = {r_perpend['radio']:.4f}, ∠r⟂ = {r_perpend['Angulo']:.2f}°")
     print(f"r∥: |r∥| = {r_paralle['radio']:.4f}, ∠r∥ = {r_paralle['Angulo']:.2f}°")
     rho = r_perpend['radio'] / r_paralle['radio'] if r_paralle['radio'] != 0 else np.inf
-    desfase = r_perpend['Angulo'] - r_paralle['Angulo']
+    desfase = desfase_inicial + r_perpend['Angulo'] - r_paralle['Angulo']
     desfase_corr = desfase + 180
     desfase_corr = VueltaAngular(desfase_corr)
     desfase_corr_rad = desfase_corr * np.pi / 180
@@ -546,6 +548,8 @@ def CalculosSubmenu3():
     print(f"T (transmisión) = {coef_transmision:.4f}")
     print("═" * 70 + "\n")
 
+    print("Estado de polarización (salida): luz natural (no cambia por reflexión en el metal).")
+    print("═" * 70 + "\n")
 
 # Cálculos para la opción 2 del menú principal
 def CalculosMenu2():
@@ -609,7 +613,7 @@ def main():
                 elif opcion1 == '2':
                     print("Ha seleccionado polarización no lineal.")
                     print("-"* 100)
-                    print("Ingrese los datos en el siguiente formato: angulo de incidencia (grados)/n - ki/razon de Amplitudes (E0⟂/E0∥)")
+                    print("Ingrese los datos en el siguiente formato: angulo de incidencia (grados)/n - ki/razon de Amplitudes (E0⟂/E0∥)/desfase inicial (grados)")
                     print("Este sería un ejemplo de entrada: 45/1.33 - 2.5i/1.5")
                     print("-"* 100) 
                     CalculosSubmenu2()
