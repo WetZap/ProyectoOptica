@@ -263,6 +263,97 @@ def pedir_datos_Elemento():
 
     return elemento, longitud_onda, angulo_incidencia
 
+
+def pedir_datos_Elemento1():
+    entrada = input("")
+
+    # Procesar la entrada
+    entrada = entrada.split("/")
+    
+    if len(entrada) != 4:
+        print("Formato incorrecto. Por favor, ingrese los datos en el formato correcto.")
+        return pedir_datos_Elemento1()
+    
+
+    elemento = entrada[0].strip().lower()
+    if elemento not in ['ag', 'au', 'cu', 'al', 'pt', 'zn', 'fe']:
+        print("Elemento no válido. Por favor, ingrese un elemento válido (Ag, Au, Cu, Al, Pt, Zn, Fe).")
+        return pedir_datos_Elemento1()
+    try:
+        float(entrada[2])
+        float(entrada[3])
+    except ValueError:
+        print("Ángulo de incidencia o acimut no válidos. Por favor, ingrese valores numéricos.")
+        return pedir_datos_Elemento1()
+    try:
+        longitud_onda = float(entrada[1])
+        if longitud_onda < 300 or longitud_onda > 1700:
+            print("Longitud de onda fuera de rango. Por favor, ingrese un valor entre 300 nm y 1700 nm.")
+            return pedir_datos_Elemento1()
+    except ValueError:
+        print("Longitud de onda no válida. Por favor, ingrese un valor numérico.")
+        return pedir_datos_Elemento1()
+        
+    if float(entrada[2]) == 0:
+        print("El programa no permite incidencia normal. Por favor, ingrese un valor válido.")
+        return pedir_datos_Elemento1()
+
+
+    longitud_onda = float(entrada[1])
+    angulo_incidencia = float(entrada[2]) * np.pi / 180  # Convertir a radianes
+    acimut = float(entrada[3]) * np.pi / 180  # Convertir a radianes
+
+    return elemento, longitud_onda, angulo_incidencia, acimut
+
+def pedir_datos_Elemento2():
+    entrada = input("")
+
+    # Procesar la entrada
+    entrada = entrada.split("/")
+    
+    if len(entrada) != 5:
+        print("Formato incorrecto. Por favor, ingrese los datos en el formato correcto.")
+        return pedir_datos_Elemento2()
+    
+
+    elemento = entrada[0].strip().lower()
+    if elemento not in ['ag', 'au', 'cu', 'al', 'pt', 'zn', 'fe']:
+        print("Elemento no válido. Por favor, ingrese un elemento válido (Ag, Au, Cu, Al, Pt, Zn, Fe).")
+        return pedir_datos_Elemento2()
+    try:
+        float(entrada[2])
+        float(entrada[3])
+    except ValueError:
+        print("Ángulo de incidencia o acimut no válidos. Por favor, ingrese valores numéricos.")
+        return pedir_datos_Elemento2()
+    try:
+        float(entrada[4])
+    except ValueError:
+        print("Razon de ejes no válidos. Por favor, ingrese valores numéricos.")
+        return pedir_datos_Elemento2()
+    
+
+
+    try:
+        longitud_onda = float(entrada[1])
+        if longitud_onda < 300 or longitud_onda > 1700:
+            print("Longitud de onda fuera de rango. Por favor, ingrese un valor entre 300 nm y 1700 nm.")
+            return pedir_datos_Elemento2()
+    except ValueError:
+        print("Longitud de onda no válida. Por favor, ingrese un valor numérico.")
+        return pedir_datos_Elemento2()
+        
+    if float(entrada[2]) == 0:
+        print("El programa no permite incidencia normal. Por favor, ingrese un valor válido.")
+        return pedir_datos_Elemento2()
+
+    longitud_onda = float(entrada[1])
+    angulo_incidencia = float(entrada[2]) * np.pi / 180  # Convertir a radianes
+    razon = float(entrada[4])
+    desfase_inicial = float(entrada[5])
+
+    return elemento, longitud_onda, angulo_incidencia, razon , desfase_inicial
+
 # Función para ajustar el ángulo dentro de 0-360 grados
 def VueltaAngular(angulo):
     # Normaliza el ángulo al intervalo [0, 360)
@@ -590,6 +681,164 @@ def CalculosMenu2():
     print("═" * 70 + "\n")
     return
 
+def CalculosMenu2Sub1():
+    """Cálculo usando datos de elementos metálicos y salida embellecida."""
+
+    elemento, longitud_onda, theta, acimut = pedir_datos_Elemento1()
+    n_comp = determinar_ncomp(elemento, longitud_onda)
+
+    print("\n" + "═" * 70)
+    print("Cálculo por elementos metálicos – Resultados")
+    print("═" * 70)
+    print(f"Elemento: {elemento.capitalize()} | λ = {longitud_onda:.1f} nm | θ = {theta * 180 / np.pi:.2f}°")
+    print(f"ñ = {n_comp}")
+    print(f"Acimut = {acimut * 180 / np.pi:.2f}°")
+
+    r_perpe = calcular_r_perpe(n, n_comp, theta)
+    r_paral = calcular_r_paral(n, n_comp, theta)
+
+    r_perpend = {"radio": float(np.abs(r_perpe)), "Angulo": float(np.angle(r_perpe) * 180 / np.pi)}
+    r_paralle = {"radio": float(np.abs(r_paral)), "Angulo": float(np.angle(r_paral) * 180 / np.pi)}
+
+    print("\nPrimera forma")
+    print("─" * 70)
+    print(f"r⟂: |r⟂| = {r_perpend['radio']:.4f}, ∠r⟂ = {r_perpend['Angulo']:.2f}°")
+    print(f"r∥: |r∥| = {r_paralle['radio']:.4f}, ∠r∥ = {r_paralle['Angulo']:.2f}°")
+    rho = r_perpend['radio'] / r_paralle['radio'] if r_paralle['radio'] != 0 else np.inf
+    desfase = r_perpend['Angulo'] - r_paralle['Angulo']
+    desfase_corr = desfase + 180
+    desfase_corr = VueltaAngular(desfase_corr)
+    desfase_corr_rad = desfase_corr * np.pi / 180
+
+    print(f"ρ = |r⟂|/|r∥| = {rho:.8f}")
+    print(f"Δφ_total  = {desfase:.2f}°")
+    print(f"Δφ_total (corregido) = {desfase_corr:.4f}°")
+
+    print("\nSegunda forma")
+    print("─" * 70)
+    desfase_2forma = Calcular_2aForma(n, n_comp, theta)
+    print(f"|ρ| (2ª forma) = {np.abs(desfase_2forma):.8f}")
+    print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.4f}°")
+    print("═" * 70 + "\n")
+
+# Razon entre amplitudes tras reflexión
+    print("\nRazón entre amplitudes tras reflexión")
+    print("─" * 70)
+    razon = np.abs(desfase_2forma) * np.exp(1j * np.angle(desfase_2forma))*np.tan(acimut)
+    razon2 = rho*np.exp(1j * desfase_corr_rad) * np.tan(acimut)
+    print(f"E''⟂/E''∥ = {np.abs(razon2):.8f} (1ª forma)")
+    print(f"E''⟂/E''∥ = {np.abs(razon):.8f} (2ª forma)")
+    print("─" * 70)
+
+
+
+
+    # Coeficientes de reflexión y transmisión para acimut dado
+    coef_reflexion = (np.sin(acimut) ** 2) * np.abs(r_perpe) ** 2 + (np.cos(acimut) ** 2) * np.abs(r_paral) ** 2
+    coef_reflexion = float(coef_reflexion)
+    coef_transmision = float(max(0.0, 1.0 - coef_reflexion))  # recorte numérico
+    print("\nCoeficientes energéticos")
+    print("─" * 70)
+    print(f"R (reflexión) = {coef_reflexion:.4f}")
+    print(f"T (transmisión) = {coef_transmision:.4f}")
+
+    # Clasificación de la polarización
+    print("\nClasificación de la polarización")
+    print("─" * 70)
+
+    # Cercanía a 0° o 180° se toma como lineal
+    if abs(desfase_corr) < 1 or abs(abs(desfase_corr) - 180) < 1:
+        print("Lineal (Δφ ≈ 0° o 180°).")
+    else:
+        if 0 < desfase_corr < 180:
+            print("Elíptica dextrógira (Δφ en (0°, 180°)).")
+        elif 180 < desfase_corr < 360 :
+            print("Elíptica levógira (Δφ en (180°, 360°)).")
+            
+    print("═" * 70 + "\n")
+    return
+
+def CalculosMenu2Sub2():
+    """Cálculo usando datos de elementos metálicos y salida embellecida."""
+
+    elemento, longitud_onda, theta,razon_Amplitudes,desfase_inicial = pedir_datos_Elemento2()
+    n_comp = determinar_ncomp(elemento, longitud_onda)
+
+    print("\n" + "═" * 70)
+    print("Cálculo por elementos metálicos – Resultados")
+    print("═" * 70)
+    print(f"Elemento: {elemento.capitalize()} | λ = {longitud_onda:.1f} nm | θ = {theta * 180 / np.pi:.2f}°")
+    print(f"ñ = {n_comp}")
+    print(f"Razón de amplitudes inicial: {razon_Amplitudes:.4f} | Desfase inicial: {desfase_inicial:.2f}°")
+
+    r_perpe = calcular_r_perpe(n, n_comp, theta)
+    r_paral = calcular_r_paral(n, n_comp, theta)
+
+    r_perpend = {"radio": float(np.abs(r_perpe)), "Angulo": float(np.angle(r_perpe) * 180 / np.pi)}
+    r_paralle = {"radio": float(np.abs(r_paral)), "Angulo": float(np.angle(r_paral) * 180 / np.pi)}
+
+    print("\nPrimera forma")
+    print("─" * 70)
+    print(f"r⟂: |r⟂| = {r_perpend['radio']:.4f}, ∠r⟂ = {r_perpend['Angulo']:.2f}°")
+    print(f"r∥: |r∥| = {r_paralle['radio']:.4f}, ∠r∥ = {r_paralle['Angulo']:.2f}°")
+    rho = r_perpend['radio'] / r_paralle['radio'] if r_paralle['radio'] != 0 else np.inf
+    desfase = desfase_inicial + r_perpend['Angulo'] - r_paralle['Angulo']
+    desfase_corr = desfase + 180
+    desfase_corr = VueltaAngular(desfase_corr)
+    desfase_corr_rad = desfase_corr * np.pi / 180
+    print(f"ρ = |r⟂|/|r∥| = {rho:.8f}")
+    print(f"Δφ_total  = {desfase:.2f}°")
+    print(f"Δφ_total (corregido) = {desfase_corr:.4f}°")
+
+    print("\nSegunda forma")
+    print("─" * 70)
+    desfase_2forma = Calcular_2aForma(n, n_comp, theta)
+    print(f"|ρ| (2ª forma) = {np.abs(desfase_2forma):.8f}")
+    print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.4f}°")
+    print("═" * 70 + "\n")
+
+
+    # Razon entre amplitudes tras reflexión
+    print("\nRazón entre amplitudes tras reflexión")
+    print("─" * 70)
+    razon = np.abs(desfase_2forma) * np.exp(1j * np.angle(desfase_2forma))*razon_Amplitudes
+    razon2 = rho*np.exp(1j * desfase_corr_rad) * razon_Amplitudes
+    print(f"E''⟂/E''∥ = {np.abs(razon2):.8f} (1ª forma)")
+    print(f"E''⟂/E''∥ = {np.abs(razon):.8f} (2ª forma)")
+    print("─" * 70)
+
+    # Coeficientes de reflexión y transmisión para razon de semiejes dado
+    R_perpend = np.abs(r_perpe) ** 2
+    R_paral = np.abs(r_paral) ** 2
+    coef_reflexion = (R_perpend + R_paral*(razon_Amplitudes**2))/(1 + razon_Amplitudes**2)
+    coef_transmision = float(max(0.0, 1.0 - coef_reflexion))  # recorte numérico
+    print("\nCoeficientes energéticos")
+    print("─" * 70)
+    print(f"R (reflexión) = {coef_reflexion:.4f}")
+    print(f"T (transmisión) = {coef_transmision:.4f}")
+    print("═" * 70 + "\n")
+
+
+
+
+
+    # Clasificación de la polarización
+    print("\nClasificación de la polarización")
+    print("─" * 70)
+
+    # Cercanía a 0° o 180° se toma como lineal
+    if abs(desfase_corr) < 1 or abs(abs(desfase_corr) - 180) < 1:
+        print("Lineal (Δφ ≈ 0° o 180°).")
+    else:
+        if 0 < desfase_corr < 180:
+            print("Elíptica dextrógira (Δφ en (0°, 180°)).")
+        elif 180 < desfase_corr < 360 :
+            print("Elíptica levógira (Δφ en (180°, 360°)).")
+            
+    print("═" * 70 + "\n")
+
+    return
+
 # Función principal
 def main():
         
@@ -641,8 +890,52 @@ def main():
 
         elif opcion == '2':
             print("Ha seleccionado cálculo por elementos metálicos.")
+
             print("-"* 100)
             print("Datos disponibles para los siguientes elementos metálicos: Ag, Au, Cu, Al, Pt, Zn, Fe.\nLongitudes de onda disponibles entre 300 nm y 1700 nm.")
+            while opcion1 := sub_menu():
+
+                # 1a Opcion: Polarización lineal
+                if opcion1 == '1':
+                    print("Ha seleccionado polarización lineal.")
+                    print("-"* 100)
+                    print("Ingrese los datos en el siguiente formato: elemento metalico/longitud de onda (nm)/angulo de incidencia (grados)/acimut (grados)")
+                    print("Este sería un ejemplo de entrada: Ag/500/45/30")
+                    print("-"* 100)
+                    CalculosMenu2Sub1()
+                    print("-"* 100)
+
+                    input("Pulsa Enter para continuar…")
+                # 2a Opcion: Polarización no lineal
+                elif opcion1 == '2':
+                    print("Ha seleccionado polarización no lineal.")
+                    print("-"* 100)
+                    print("Ingrese los datos en el siguiente formato: elemento metalico/longitud de onda (nm)/angulo de incidencia (grados)/razon de Amplitudes (E0⟂/E0∥)/desfase inicial (grados)")
+                    print("Este sería un ejemplo de entrada: Ag/500/45/1.5/20")
+                    print("-"* 100) 
+                    CalculosMenu2Sub2()
+                    print("-"* 100)
+
+                    input("Pulsa Enter para continuar…")
+                # 3a Opcion: Luz natural
+                elif opcion1 == '3':
+                    print("Ha seleccionado luz natural.")
+                    print("-"* 100)
+                    print("Ingrese los datos en el siguiente formato: elemento metalico/longitud de onda (nm)/angulo de incidencia (grados)")
+                    print("Este sería un ejemplo de entrada: Ag/500/45")
+                    print("-"* 100)
+                    CalculosMenu2()
+                    print("-"* 100)
+
+
+                    input("Pulsa Enter para continuar…")
+                elif opcion1 == '4':
+                    break
+                else:
+                    print("Opción no válida. Por favor, intente de nuevo.")
+                    continue
+
+
             print("Ingrese los datos en el siguiente formato: elemento metalico/longitud de onda (nm)/angulo de incidencia (grados)")
             print("Este sería un ejemplo de entrada: Ag/500/45")
             CalculosMenu2()
