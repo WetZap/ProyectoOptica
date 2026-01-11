@@ -76,7 +76,7 @@ def sub_menu():
 # Petición de datos al usuario para Opción 1 MENU y opción 1 SUBMENU
 def pedir_datosLINEAL():
 
-    entrada = input("Entada: ")
+    entrada = input("Entrada: ")
 
     # Procesar la entrada
     entrada = entrada.split("/")
@@ -131,7 +131,7 @@ def pedir_datosLINEAL():
 # Petición de datos al usuario para Opción 1 MENU y opción 2 SUBMENU
 def pedir_datosNOLINEAL():
     
-    entrada = input("Entada: ")
+    entrada = input("Entrada: ")
 
     # Procesar la entrada
     entrada = entrada.split("/")
@@ -180,7 +180,7 @@ def pedir_datosNOLINEAL():
 # Petición de datos al usuario para Opción 1 MENU y opción 3 SUBMENU
 def pedir_datos_Natural():
     
-    entrada = input("Entada: ")
+    entrada = input("Entrada: ")
 
     # Procesar la entrada
     entrada = entrada.split("/")
@@ -679,6 +679,21 @@ def CalculosMenu2():
     print(f"|ρ| (2ª forma) = {np.abs(desfase_2forma):.8f}")
     print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.4f}°")
     print("═" * 70 + "\n")
+    
+    # Coeficientes de reflexión y transmisión para acimut dado
+    coef_reflexion = (1/2)*(np.abs(r_perpe) ** 2 + np.abs(r_paral) ** 2)
+    coef_transmision = float(max(0.0, 1.0 - coef_reflexion))  # recorte numérico
+    print("\nCoeficientes energéticos")
+    print("─" * 70)
+    print(f"R (reflexión) = {coef_reflexion:.4f}")
+    print(f"T (transmisión) = {coef_transmision:.4f}")
+    print("═" * 70 + "\n")
+
+    print("Estado de polarización (salida): luz natural (no cambia por reflexión en el metal).")
+    print("═" * 70 + "\n")
+
+
+
     return
 
 def CalculosMenu2Sub1():
@@ -936,12 +951,7 @@ def main():
                     continue
 
 
-            print("Ingrese los datos en el siguiente formato: elemento metalico/longitud de onda (nm)/angulo de incidencia (grados)")
-            print("Este sería un ejemplo de entrada: Ag/500/45")
-            CalculosMenu2()
-            print("-"* 100)
 
-            input("Pulsa Enter para continuar…")
        
         elif opcion == '0':
             print("-"* 100)
