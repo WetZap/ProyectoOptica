@@ -349,8 +349,8 @@ def pedir_datos_Elemento2():
 
     longitud_onda = float(entrada[1])
     angulo_incidencia = float(entrada[2]) * np.pi / 180  # Convertir a radianes
-    razon = float(entrada[4])
-    desfase_inicial = float(entrada[5])
+    razon = float(entrada[3])
+    desfase_inicial = float(entrada[4])
 
     return elemento, longitud_onda, angulo_incidencia, razon , desfase_inicial
 
@@ -863,7 +863,7 @@ def main():
                     print("Ha seleccionado polarización no lineal.")
                     print("-"* 100)
                     print("Ingrese los datos en el siguiente formato: angulo de incidencia (grados)/n - ki/razon de Amplitudes (E0⟂/E0∥)/desfase inicial (grados)")
-                    print("Este sería un ejemplo de entrada: 45/1.33 - 2.5i/1.5")
+                    print("Este sería un ejemplo de entrada: 45/1.33 - 2.5i/1.5/30")
                     print("-"* 100) 
                     CalculosSubmenu2()
                     print("-"* 100)
