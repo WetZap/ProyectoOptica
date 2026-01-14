@@ -551,7 +551,7 @@ def CalculosSubmenu2():
     print("─" * 70)
     desfase_2forma = Calcular_2aForma(n, n_comp, theta)
     print(f"|ρ| (2ª forma) = {np.abs(desfase_2forma):.8f}")
-    print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.4f}°")
+    print(f"Δφ (2ª forma) = {(np.angle(desfase_2forma) * 180 / np.pi)+desfase_inicial:.4f}°")
 
 
     # Razon entre amplitudes tras reflexión
@@ -809,7 +809,7 @@ def CalculosMenu2Sub2():
     print("─" * 70)
     desfase_2forma = Calcular_2aForma(n, n_comp, theta)
     print(f"|ρ| (2ª forma) = {np.abs(desfase_2forma):.8f}")
-    print(f"Δφ (2ª forma) = {np.angle(desfase_2forma) * 180 / np.pi:.4f}°")
+    print(f"Δφ (2ª forma) = {(np.angle(desfase_2forma) * 180 / np.pi)+desfase_inicial:.4f}°")
     print("═" * 70 + "\n")
 
 
